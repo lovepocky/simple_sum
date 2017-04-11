@@ -10,7 +10,8 @@ object GlobalConfig {
   val kafkaPort = 9092
 
   val kafkaGroupId = "spark_streaming"
-  val kafkaTopics: Map[String, Int] = Map("test1" -> 1)
+  val kafkaTopicName = "test1"
+  val kafkaTopics: Map[String, Int] = Map(kafkaTopicName -> 1)
 
   val sparkAppName = "simple_sum"
   val sparkCheckPoint = "temp_checkpoint"
