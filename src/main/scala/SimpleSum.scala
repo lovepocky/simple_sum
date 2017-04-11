@@ -14,7 +14,7 @@ object SimpleSum {
 
     import GlobalConfig._
 
-    val conf = new SparkConf().setMaster("local[*]").setAppName(sparkAppName)
+    val conf = new SparkConf().setMaster(sparkMaster).setAppName(sparkAppName)
     val ssc = new StreamingContext(conf, Seconds(5))
     ssc.checkpoint(sparkCheckPoint)
 
@@ -30,7 +30,7 @@ object SimpleSum {
           state.get()
       }
 
-    inputDStream.mapWithState(spec).print(0)
+    inputDStream.mapWithState(spec).print(10)
 
     LogManager.getLogger("org").setLevel(Level.ERROR)
     ssc.start()
