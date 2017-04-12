@@ -1,3 +1,5 @@
+import org.joda.time.DateTime
+
 /**
   * Created by lovepocky on 17/4/11.
   */
@@ -16,6 +18,9 @@ object GlobalConfig {
   //val sparkMaster = "local[*]"
   val sparkMaster = "spark://192.168.1.111:7077"
   val sparkAppName = "simple_sum"
-  val sparkCheckPoint = "temp_checkpoint"
+  //val sparkCheckPoint = "temp_checkpoint"
+  val sparkCheckPoint = "alluxio://192.168.1.111:19998/simple_sum/checkpoint"
+
+  case class SumMessage(id: String, value: Int, time: DateTime)
 
 }

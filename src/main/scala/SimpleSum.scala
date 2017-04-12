@@ -14,19 +14,27 @@ object SimpleSum {
 
     import GlobalConfig._
 
+    import org.json4s._
+    import org.json4s.native.JsonMethods._
+    import org.json4s.ext.DateTimeSerializer
+
     val conf = new SparkConf().setMaster(sparkMaster).setAppName(sparkAppName)
     val ssc = new StreamingContext(conf, Seconds(5))
     ssc.checkpoint(sparkCheckPoint)
 
-    val inputDStream = KafkaUtils.createStream(ssc, zkQuorum = s"$zkHost:$zkPort", groupId = kafkaGroupId, topics = kafkaTopics)
+    val singleInputDStream = KafkaUtils.createStream(ssc, zkQuorum = s"$zkHost:$zkPort", groupId = kafkaGroupId, topics = kafkaTopics)
+
+    val inputDStream = singleInputDStream.repartition(2)
 
     val spec =
       StateSpec.function {
         (key: String, value: Option[String], state: State[Int]) =>
+          implicit val formats = DefaultFormats + DateTimeSerializer
           val originState = state.getOption().getOrElse(0)
-          val newState = originState + value.map(_.toInt).getOrElse(0)
+          val newValue = value.flatMap(x => parse(x).extractOpt[SumMessage])
+          val newState = originState + newValue.map(_.value).getOrElse(0)
           state.update(newState)
-          println(s"received number: ${value}, sum: $originState -> $newState")
+          println(s"received data: ${value}, sum: $originState -> $newState")
           state.get()
       }
 
