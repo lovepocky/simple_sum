@@ -29,3 +29,8 @@ assemblyMergeStrategy in assembly := {
     val oldStrategy = (assemblyMergeStrategy in assembly).value
     oldStrategy(x)
 }
+
+assemblyExcludedJars in assembly := {
+  val cp = (fullClasspath in assembly).value
+  cp filter {_.data.getName == "alluxio-1.4.0-spark-client-jar-with-dependencies.jar"}
+}
