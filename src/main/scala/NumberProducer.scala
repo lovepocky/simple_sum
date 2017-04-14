@@ -31,7 +31,7 @@ object NumberProducer {
     var id = 0
 
     while (true) {
-      val data = compact(render(Extraction.decompose(SumMessage(s"$idPrefix-$id", util.Random.nextInt(100), DateTime.now()))))
+      val data = compact(render(Extraction.decompose(SumMessage(s"$idPrefix-$id", util.Random.nextInt(5), util.Random.nextInt(100), DateTime.now()))))
       id = id + 1
 
       val message = new ProducerRecord[String, String](kafkaTopicName, "random_number", data)

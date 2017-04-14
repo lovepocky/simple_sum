@@ -22,6 +22,6 @@ object GlobalConfig {
   val sparkCheckPointLocal = "temp_checkpoint"
   val sparkCheckPoint = "alluxio://192.168.1.111:19998/simple_sum/checkpoint"
 
-  case class SumMessage(id: String, value: Int, time: DateTime)
+  case class SumMessage(id: String, key: Int, value: Int, time: DateTime)
 
 }
