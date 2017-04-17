@@ -22,8 +22,9 @@ object SimpleSum {
     val conf = new SparkConf().setAppName(sparkAppName).setMaster(sparkMaster)
     val ssc = new StreamingContext(conf, Seconds(5))
     ssc.checkpoint(sparkCheckPoint)
+    //ssc.remember()
 
-    val singleInputDStream = KafkaUtils.createStream(ssc, zkQuorum = s"$zkHost:$zkPort", groupId = kafkaGroupId, topics = Map(kafkaTopicName -> 2))
+    val singleInputDStream = KafkaUtils.createStream(ssc, zkQuorum = s"$zkHost:$zkPort", groupId = kafkaGroupId, topics = Map(kafkaTopicName -> 1))
 
     val inputDStream = singleInputDStream //singleInputDStream.repartition(2)
 
